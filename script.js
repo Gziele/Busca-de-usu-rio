@@ -24,14 +24,25 @@
     */
     
     fetch("https://jsonplaceholder.typicode.com/users")
-    .then(res => res.json())
-    .then(data => {
+    .then(res => {
+        if (!res.ok){
+            throw new Error("Erro na resposta da API");
+        }
+            return res.json();
+    })
+        
+        .then(data => {
         let html ="";
         data.forEach(user => {
             html += `<p><strong>${user.name}</strong><br>Email:${user.email}<br>Cidade: ${user.address.city}</p>`;
         });
         document.getElementById("resultado").innerHTML = html;
-    }); 
+    })
+
+    .catch(erro => {
+        document.getElementById("resultado").innerHTML = `<p>Erro ao buscar usuários.</p>`;
+        console.error(erro);
+    });
 
     /* strong -pra por em negrito
     br - para quebrar linha
