@@ -22,8 +22,14 @@
     segunda chamada do fetch - pega a url e faz a requisição, mas agora com o forEach para percorrer o array de objetos e mostrar o nome de cada usuário. Aquie é utilizado o innerhtml e não o text porque estamos inserindo tags <p> (HTML) não só texto puro.
     
     */
+    document.getElementById("btnBuscar").addEventListener("click" , () => {
+        const id = document.getElementById("idUsuario").value;
+
+        document.getElementById("loading").style.display = "block";
+        document.getElementById("resultado").innerHTML = "";
     
-    fetch("https://jsonplaceholder.typicode.com/users")
+
+    fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
     .then(res => {
         if (!res.ok){
             throw new Error("Erro na resposta da API");
@@ -31,18 +37,21 @@
             return res.json();
     })
         
-        .then(data => {
-        let html ="";
-        data.forEach(user => {
-            html += `<p><strong>${user.name}</strong><br>Email:${user.email}<br>Cidade: ${user.address.city}</p>`;
-        });
+        .then(user => {
+        document.getElementById("loading").style.display= "none";
+
+        const html = `<p><strong>${user.name}</strong><br>Email:${user.email}<br>Cidade: ${user.address.city}</p>`;
+        ;
         document.getElementById("resultado").innerHTML = html;
     })
 
     .catch(erro => {
+        document.getElementById("loading").style.display= "none";
         document.getElementById("resultado").innerHTML = `<p>Erro ao buscar usuários.</p>`;
         console.error(erro);
     });
+
+});
 
     /* strong -pra por em negrito
     br - para quebrar linha
