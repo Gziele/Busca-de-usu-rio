@@ -24,13 +24,21 @@
     */
     document.getElementById("btnBuscar").addEventListener("click" , () => {
         const id = document.getElementById("idUsuario").value;
+     
+        if(id ==="") {
+            document.getElementById("resultado").innerHTML = `<p> Digite um ID antes de buscar.</p>`;
+            return
+        }
+         if( Number(id) <= 0 || Number(id) > 10) {
+            document.getElementById("resultado").innerHTML = `<p>Digite um ID válido(entre 1 e 10).</p>`;
+            return;
+        } 
 
         document.getElementById("loading").style.display = "block";
         document.getElementById("resultado").innerHTML = "";
-    
 
-    fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
-    .then(res => {
+        fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
+        .then(res => {
         if (!res.ok){
             throw new Error("Erro na resposta da API");
         }
