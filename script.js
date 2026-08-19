@@ -60,6 +60,31 @@
     });
 
 });
+   
+   let todosUsuarios = [];
+
+   fetch("https://jsonplaceholder.typicode.com/users")
+   .then(res => res.json())
+   .then(data => {
+        todosUsuarios =data;
+        mostrarUsuarios(todosUsuarios);
+   });
+
+   function mostrarUsuarios(lista) {
+    const html = lista.map(user =>
+        `<p><strong>${user.name}</strong><br>Email:${user.email}</p>`
+    ).join("");
+         document.getElementById("resultado").innerHTML = html;
+   }
+
+   document.getElementById("busca").addEventListener("input", () => {
+       const termo = document.getElementById("busca").value;
+
+       const filtrados = todosUsuarios.filter(user =>
+        user.name.toLowerCase().includes(termo.toLowerCase())
+    );
+    mostrarUsuarios(filtrados);
+   });
 
     /* strong -pra por em negrito
     br - para quebrar linha
